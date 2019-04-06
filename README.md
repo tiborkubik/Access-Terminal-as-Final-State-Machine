@@ -1,2 +1,2 @@
 # INC
-Access terminal wrote in VHDL
+Access terminal written in VHDL
