@@ -28,7 +28,7 @@ end entity fsm;
 --                      Architecture declaration
 -- ----------------------------------------------------------------------------
 architecture behavioral of fsm is
-   type t_state is (TEST1, TEST2, TEST3, TEST4, TEST5, TEST6, TEST7, TEST8, TEST9, TEST10, PRINT_MESSAGE_SUCCESS, WRONG_STATE, PRINT_MESSAGE, FINISH);
+   type t_state is (TEST1, TEST2, TEST3, TEST4, TEST5, TEST6, TEST7, TEST8, TEST9, TEST10, SUCCESS, PRINT_MESSAGE_SUCCESS, WRONG_STATE, PRINT_MESSAGE, FINISH);
    signal present_state, next_state : t_state;
 
 begin
@@ -154,12 +154,23 @@ begin
       when TEST10 =>
       next_state <= TEST10;
       if (KEY(0) = '1') and (n_of_code = 1) then
-        	next_state <= PRINT_MESSAGE_SUCCESS;
+        	next_state <= SUCCESS;
 	elsif (KEY(6) = '1') and (n_of_code = 2) then
-		next_state <= PRINT_MESSAGE_SUCCESS;
+		next_state <= SUCCESS;
+	elsif (KEY(15) = '1') then
+		next_state <= PRINT_MESSAGE;
 	elsif (KEY(14 downto 0) /= "000000000000000") then
 	 	next_state <= WRONG_STATE;
       end if;
+      -- - - - - - - - - - - - - - - - - - - - - - -
+      when SUCCESS =>
+      next_state <= SUCCESS;
+      if(KEY(15) = '1') then
+	     	next_state <= PRINT_MESSAGE_SUCCESS;
+      elsif (KEY(14 downto 0) /= "000000000000000") then
+	 	next_state <= WRONG_STATE;
+      end if;
+
    -- - - - - - - - - - - - - - - - - - - - - - -
    when PRINT_MESSAGE =>
       next_state <= PRINT_MESSAGE;
@@ -209,8 +220,8 @@ begin
    when PRINT_MESSAGE_SUCCESS =>
       FSM_CNT_CE     <= '1';
       FSM_MX_LCD     <= '1';
-      FSM_LCD_WR     <= '1';
       FSM_MX_MEM     <= '1';
+      FSM_LCD_WR     <= '1';
    -- - - - - - - - - - - - - - - - - - - - - - -
    when FINISH =>
       if (KEY(15) = '1') then
