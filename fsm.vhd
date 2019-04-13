@@ -28,7 +28,7 @@ end entity fsm;
 --                      Architecture declaration
 -- ----------------------------------------------------------------------------
 architecture behavioral of fsm is
-   type t_state is (TEST1, TEST2, TEST3, TEST4, TEST5, TEST6, TEST7, TEST8, TEST9, TEST10, SUCCESS, PRINT_MESSAGE_SUCCESS, WRONG_STATE, PRINT_MESSAGE, FINISH);
+   type t_state is (TEST1, TEST2_CODE1, TEST2_CODE2, TEST3_CODE1, TEST3_CODE2, TEST4_CODE1, TEST4_CODE2, TEST5_CODE1, TEST5_CODE2, TEST6_CODE1, TEST6_CODE2, TEST7_CODE1, TEST7_CODE2, TEST8_CODE1, TEST8_CODE2, TEST9_CODE1, TEST9_CODE2, TEST10_CODE1, TEST10_CODE2, SUCCESS, PRINT_MESSAGE_SUCCESS, WRONG_STATE, PRINT_MESSAGE, FINISH);
    signal present_state, next_state : t_state;
 
 begin
@@ -44,118 +44,196 @@ end process sync_logic;
 
 -- -------------------------------------------------------
 next_state_logic : process(present_state, KEY, CNT_OF)
-variable n_of_code : integer;
-
+-- kod1 = 10666 99550 	
+-- kod2 = 74668 96856
 begin
    case (present_state) is
        -- - - - - - - - - - - - - - - - - - - - - - -
       when TEST1 =>
       next_state <= TEST1;
-      if (KEY(1) = '1') then
-	         n_of_code := 1;
-        	next_state <= TEST2;
- 	elsif (KEY(7) = '1') then
-		n_of_code := 2;
-		next_state <= TEST2;
+      if (KEY(1) = '1') then				-- code1: 1
+        	next_state <= TEST2_CODE1;
+ 	elsif (KEY(7) = '1') then			-- code2: 7
+		next_state <= TEST2_CODE2;
 	elsif (KEY(15) = '1') then
 		next_state <= PRINT_MESSAGE;
 	elsif (KEY(14 downto 0) /= "000000000000000") then
 		next_state <= WRONG_STATE;
       end if;
        -- - - - - - - - - - - - - - - - - - - - - - -
-      when TEST2 =>
-      next_state <= TEST2;
-      if (KEY(0) = '1') and (n_of_code = 1) then
-        	next_state <= TEST3; 
- 	elsif (KEY(4) = '1') and (n_of_code = 2) then
-		next_state <= TEST3;
+      when TEST2_CODE1 =>
+      next_state <= TEST2_CODE1;
+      if (KEY(0) = '1') then				-- code1: 10
+        	next_state <= TEST3_CODE1; 
 	elsif (KEY(15) = '1') then
 		next_state <= PRINT_MESSAGE;
 	elsif (KEY(14 downto 0) /= "000000000000000") then
 	 	next_state <= WRONG_STATE;
       end if;
        -- - - - - - - - - - - - - - - - - - - - - - -
-      when TEST3 =>
-      next_state <= TEST3;
-      if (KEY(6) = '1') then
-        	next_state <= TEST4; 
+      when TEST2_CODE2 =>
+      next_state <= TEST2_CODE2;			-- code2: 74
+ 	if (KEY(4) = '1') then
+		next_state <= TEST3_CODE2;
 	elsif (KEY(15) = '1') then
 		next_state <= PRINT_MESSAGE;
 	elsif (KEY(14 downto 0) /= "000000000000000") then
 	 	next_state <= WRONG_STATE;
       end if;
        -- - - - - - - - - - - - - - - - - - - - - - -
-      when TEST4 =>
-      next_state <= TEST4;
-      if (KEY(6) = '1') then
-        	next_state <= TEST5; 
+      when TEST3_CODE1 =>
+      next_state <= TEST3_CODE1;
+      if (KEY(6) = '1') then					-- code1: 106
+        	next_state <= TEST4_CODE1; 			
+	elsif (KEY(15) = '1') then
+		next_state <= PRINT_MESSAGE;
+	elsif (KEY(14 downto 0) /= "000000000000000") then
+	 	next_state <= WRONG_STATE;
+      end if;
+      -- - - - - - - - - - - - - - - - - - - - - - -
+      when TEST3_CODE2 =>
+      next_state <= TEST3_CODE2;
+      if (KEY(6) = '1') then					-- code2: 746
+        	next_state <= TEST4_CODE2; 			
+	elsif (KEY(15) = '1') then
+		next_state <= PRINT_MESSAGE;
+	elsif (KEY(14 downto 0) /= "000000000000000") then
+	 	next_state <= WRONG_STATE;
+      end if;
+       -- - - - - - - - - - - - - - - - - - - - - - -
+      when TEST4_CODE1 =>
+      next_state <= TEST4_CODE1;
+      if (KEY(6) = '1') then					-- code1: 1066
+        	next_state <= TEST5_CODE1; 			
+	elsif (KEY(15) = '1') then
+		next_state <= PRINT_MESSAGE;
+	elsif (KEY(14 downto 0) /= "000000000000000") then
+	 	next_state <= WRONG_STATE;
+      end if;
+       -- - - - - - - - - - - - - - - - - - - - - - -
+      when TEST4_CODE2 =>
+      next_state <= TEST4_CODE2;
+      if (KEY(6) = '1') then					
+        	next_state <= TEST5_CODE2; 			-- code2: 7466
 	elsif (KEY(15) = '1') then
 		next_state <= PRINT_MESSAGE;
 	elsif (KEY(14 downto 0) /= "000000000000000") then
 	 	next_state <= WRONG_STATE;
       end if;
         -- - - - - - - - - - - - - - - - - - - - - - -
-      when TEST5 =>
-      next_state <= TEST5;
-      if (KEY(6) = '1') and (n_of_code = 1) then
-        	next_state <= TEST6;
-	elsif (KEY(8) = '1') and (n_of_code = 2) then
-		next_state <= TEST6;
+      when TEST5_CODE1 =>
+      next_state <= TEST5_CODE1;
+      if (KEY(6) = '1') then				-- code1: 10666
+        	next_state <= TEST6_CODE1;
+	elsif (KEY(15) = '1') then
+		next_state <= PRINT_MESSAGE;
+	elsif (KEY(14 downto 0) /= "000000000000000") then
+	 	next_state <= WRONG_STATE;
+      end if;
+         -- - - - - - - - - - - - - - - - - - - - - - -
+      when TEST5_CODE2 =>
+      next_state <= TEST5_CODE2;
+	if (KEY(8) = '1') then
+		next_state <= TEST6_CODE2;		-- code2: 74668
 	elsif (KEY(15) = '1') then
 		next_state <= PRINT_MESSAGE;
 	elsif (KEY(14 downto 0) /= "000000000000000") then
 	 	next_state <= WRONG_STATE;
       end if;
        -- - - - - - - - - - - - - - - - - - - - - - -
-      when TEST6 =>
-      next_state <= TEST6;
-      if (KEY(9) = '1') then
-        	next_state <= TEST7; 
+      when TEST6_CODE1 =>
+      next_state <= TEST6_CODE1;
+      if (KEY(9) = '1') then				-- code1: 10666 9
+        	next_state <= TEST7_CODE1; 		
 	elsif (KEY(15) = '1') then
 		next_state <= PRINT_MESSAGE;
 	elsif (KEY(14 downto 0) /= "000000000000000") then
 	 	next_state <= WRONG_STATE;
       end if;
        -- - - - - - - - - - - - - - - - - - - - - - -
-      when TEST7 =>
-      next_state <= TEST7;
-      if (KEY(9) = '1') and (n_of_code = 1) then
-        	next_state <= TEST8;
-	elsif (KEY(6) = '1') and (n_of_code = 2) then
-		next_state <= TEST8;
+      when TEST6_CODE2 =>
+      next_state <= TEST6_CODE2;
+      if (KEY(9) = '1') then			
+        	next_state <= TEST7_CODE2; 		-- code2: 74668 9
 	elsif (KEY(15) = '1') then
 		next_state <= PRINT_MESSAGE;
 	elsif (KEY(14 downto 0) /= "000000000000000") then
 	 	next_state <= WRONG_STATE;
       end if;
        -- - - - - - - - - - - - - - - - - - - - - - -
-      when TEST8 =>
-      next_state <= TEST8;
-      if (KEY(5) = '1') and (n_of_code = 1) then
-        	next_state <= TEST9;
-	elsif (KEY(8) = '1') and (n_of_code = 2) then
-		next_state <= TEST9;
+      when TEST7_CODE1 =>
+      next_state <= TEST7_CODE1;
+      if (KEY(9) = '1') then				-- code1: 10666 99
+        	next_state <= TEST8_CODE1;
+	elsif (KEY(15) = '1') then
+		next_state <= PRINT_MESSAGE;
+	elsif (KEY(14 downto 0) /= "000000000000000") then
+	 	next_state <= WRONG_STATE;
+      end if;
+      -- - - - - - - - - - - - - - - - - - - - - - -
+      when TEST7_CODE2 =>
+      next_state <= TEST7_CODE2;
+	if (KEY(6) = '1')then				-- code2: 74668 96
+		next_state <= TEST8_CODE2;
 	elsif (KEY(15) = '1') then
 		next_state <= PRINT_MESSAGE;
 	elsif (KEY(14 downto 0) /= "000000000000000") then
 	 	next_state <= WRONG_STATE;
       end if;
        -- - - - - - - - - - - - - - - - - - - - - - -
-      when TEST9 =>
-      next_state <= TEST9;
+      when TEST8_CODE1 =>
+      next_state <= TEST8_CODE1;
+      if (KEY(5) = '1') then				-- code1: 10666 995
+        	next_state <= TEST9_CODE1;
+	elsif (KEY(15) = '1') then
+		next_state <= PRINT_MESSAGE;
+	elsif (KEY(14 downto 0) /= "000000000000000") then
+	 	next_state <= WRONG_STATE;
+      end if;
+      -- - - - - - - - - - - - - - - - - - - - - - -
+      when TEST8_CODE2 =>
+      next_state <= TEST8_CODE2;
+	if (KEY(8) = '1') then				-- code2: 74668 968
+		next_state <= TEST9_CODE2;
+	elsif (KEY(15) = '1') then
+		next_state <= PRINT_MESSAGE;
+	elsif (KEY(14 downto 0) /= "000000000000000") then
+	 	next_state <= WRONG_STATE;
+      end if;
+       -- - - - - - - - - - - - - - - - - - - - - - -
+      when TEST9_CODE1 =>
+      next_state <= TEST9_CODE1;
+      if (KEY(5) = '1') then				-- code1: 10666 9955
+        	next_state <= TEST10_CODE1; 		
+	elsif (KEY(15) = '1') then
+		next_state <= PRINT_MESSAGE;
+	elsif (KEY(14 downto 0) /= "000000000000000") then
+	 	next_state <= WRONG_STATE;
+      end if;
+       -- - - - - - - - - - - - - - - - - - - - - - -
+      when TEST9_CODE2 =>
+      next_state <= TEST9_CODE2;
       if (KEY(5) = '1') then
-        	next_state <= TEST10; 
+        	next_state <= TEST10_CODE2; 		-- code2: 74668 9685
 	elsif (KEY(15) = '1') then
 		next_state <= PRINT_MESSAGE;
 	elsif (KEY(14 downto 0) /= "000000000000000") then
 	 	next_state <= WRONG_STATE;
       end if;
        -- - - - - - - - - - - - - - - - - - - - - - -
-      when TEST10 =>
-      next_state <= TEST10;
-      if (KEY(0) = '1') and (n_of_code = 1) then
+      when TEST10_CODE1 =>
+      next_state <= TEST10_CODE1;
+      if (KEY(0) = '1') then				-- code1: 10666 99550
         	next_state <= SUCCESS;
-	elsif (KEY(6) = '1') and (n_of_code = 2) then
+	elsif (KEY(15) = '1') then
+		next_state <= PRINT_MESSAGE;
+	elsif (KEY(14 downto 0) /= "000000000000000") then
+	 	next_state <= WRONG_STATE;
+      end if;
+       -- - - - - - - - - - - - - - - - - - - - - - -
+      when TEST10_CODE2 =>
+      next_state <= TEST10_CODE2;
+	if (KEY(6) = '1') then				-- code2: 74668 96850
 		next_state <= SUCCESS;
 	elsif (KEY(15) = '1') then
 		next_state <= PRINT_MESSAGE;
